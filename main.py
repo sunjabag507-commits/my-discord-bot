@@ -63,10 +63,15 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # 5. 실행
+# 코드 맨 아랫부분
 if __name__ == "__main__":
-    keep_alive() # 웹 서버 먼저 실행
-    token = os.environ.get('DISCORD_TOKEN')
+    keep_alive() # 웹 서버 실행
+    
+    # Render의 Environment에 적은 이름이랑 똑같아야 합니다!
+    token = os.environ.get('DISCORD_TOKEN') 
+    
     if token:
         bot.run(token)
     else:
-        print("에러: DISCORD_TOKEN이 설정되지 않았습니다.")
+        # 지금 이 메시지가 로그에 뜨고 있는 거예요!
+        print("알림: DISCORD_TOKEN이 설정되지 않았습니다.")

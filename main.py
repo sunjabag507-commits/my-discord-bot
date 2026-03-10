@@ -3,6 +3,21 @@ from discord.ext import commands
 import datetime
 import json
 import os
+from flask import Flask
+from threading import Thread
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "I am alive"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 # 봇 설정
 intents = discord.Intents.all()
@@ -43,20 +58,4 @@ async def 출석(ctx):
         await ctx.send(f"{ctx.author.mention}님, 출석 완료! (총 {count}회 출석)")
         
 keep_alive()
-bot.run(os.environ.get('MTQ4MDg0MDUzNjY0MTM3MjMyMQ.GdtXAA.Hmp7G4eVPZj5BIcoq5NzFHErRu4Co9IFJEJek0'))
-        
-from flask import Flask
-from threading import Thread
-
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "I am alive"
-
-def run():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
+bot.run(os.environ.get('DISCORD_TOKEN'))

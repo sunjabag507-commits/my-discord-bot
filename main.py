@@ -41,7 +41,7 @@ async def 출석(ctx):
         count = len(data[user_id])
         await ctx.send(f"{ctx.author.mention}님, 출석 완료! (총 {count}회 출석)")
         
-bot.run('MTQ4MDg0MDUzNjY0MTM3MjMyMQ.GlSQC2.qMIQh35tsijGnwl1P_HmzrZ_07e8Gvh-1JRv8A')
+bot.run('MTQ4MDg0MDUzNjY0MTM3MjMyMQ.G9Y7Xg.D_kgTsbstiz-nIAVIcVcYreabz3HJHsuBleK2Y')
         
         
 

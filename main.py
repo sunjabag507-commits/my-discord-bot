@@ -1,19 +1,19 @@
 import discord
 from discord.ext import commands
-import datetime
-import json
 import os
 from flask import Flask
 from threading import Thread
 
+# 1. 렌더용 가짜 웹 서버 설정
 app = Flask('')
 
 @app.route('/')
 def home():
-    return "I am alive"
+    return "Bot is running!"
 
 def run():
-    port = int(os.environ.get("PORT",10000))
+    # 렌더가 정해주는 포트를 사용하거나 기본 10000번 사용
+    port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
 
 def keep_alive():
@@ -21,43 +21,24 @@ def keep_alive():
     t.daemon = True
     t.start()
 
-# 봇 설정
-intents = discord.Intents.all()
+# 2. 디스코드 봇 설정
+intents = discord.Intents.default()
+intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-# 출석 데이터 로드 (간이 데이터베이스)
-def load_data():
-    try:
-        with open('attendance.json', 'r') as f:
-            return json.load(f)
-    except:
-         return{}
-        
-def save_data(data):
-    with open('attendance.json', 'w') as f:
-        json.dump(data, f, indent=4)
-        
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
-    
-@bot.command()
-async def 출석(ctx):
-    user_id = str(ctx.author.id)
-    today = str(datetime.date.today())
-    
-    data = load_data()
-    
-    if user_id not in data:
-        data[user_id] =[]
-        
-    if today in data[user_id]:
-        await ctx.send(f"{ctx.author.mention}님, 오늘은 이미 출석체크를 하셨습니다.")
+
+# --- 본인의 봇 명령어들을 이 아래에 붙여넣으세요 ---
+
+# --- --------------------------------------- ---
+
+# 3. 봇 실행
+if __name__ == "__main__":
+    keep_alive() # 웹 서버 먼저 켜기
+    token = os.environ.get('DISCORD_TOKEN')
+    if token:
+        bot.run(token)
     else:
-        data[user_id].append(today)
-        save_data(data)
-        count = len(data[user_id])
-        await ctx.send(f"{ctx.author.mention}님, 출석 완료! (총 {count}회 출석)")
-        
-keep_alive()
-bot.run(os.environ.get('DISCORD_TOKEN'))
+        print("토큰이 설정되지 않았습니다. Render의 Environment를 확인하세요.")

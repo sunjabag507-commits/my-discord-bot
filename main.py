@@ -22,8 +22,13 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
-async def on_ready():
-    print(f'성공! 봇 이름: {bot.user.name}')
+async def on_message(message):
+    # 봇 자신이 쓴 메시지는 무시
+    if message.author == bot.user:
+        return
+    
+    # 명령어 처리 (이게 없으면 !명령어가 작동 안 함)
+    await bot.process_commands(message)
 
 # --- 여기에 본인 명령어 추가 ---
 
